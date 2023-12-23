@@ -9,7 +9,7 @@ int main(void) {
         start_size = get_int("Start size: ");
     } while (start_size < 9);
 
-    // TODO: Prompt for end size
+    // TODO: Prompt for end size game the
     int end_size;
     do {
         end_size = get_int("End size: ");
