@@ -11,8 +11,12 @@ int main(void) {
     } while (start_size < 9);
 
     // TODO: Prompt for end size
-
+    int end_size;
+    do {
+      end_size = get_int("Enter ending population size: ");
+    }
+    while (end_size < start_size)
     // TODO: Calculate number of years until we reach threshold
-
+    
     // TODO: Print number of years
 }
