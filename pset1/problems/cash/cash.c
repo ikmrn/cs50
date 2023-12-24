@@ -38,13 +38,19 @@ int main(void)
 int get_cents(void)
 {
     // TODO
-    int cents_owed = get_int("Change owed: ");
+    int cents_owed;
+    do {
+        cents_owed = get_int("Change owed: ");
+    }
+    while (cents_owed < 0);
+
     return cents_owed;
 }
 
 int calculate_quarters(int cents)
 {
     // TODO
+    
     return 0;
 }
 
