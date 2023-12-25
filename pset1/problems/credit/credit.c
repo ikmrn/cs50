@@ -4,10 +4,20 @@
 // Prototypes
 long get_number(void);
 int check_luhn(long card_number);
+int is_double_digit(int digit);
 
 int main(void) {
     long card_number = get_number();
     int luhn_result = check_luhn(card_number);
+    printf("Luhn is %i\n", luhn_result);
+}
+
+int is_double_digit(int digit) {
+    if (digit * 2 > 9) {
+        return ((digit * 2) % 10) + ((digit * 2) / 10);
+    } else {
+        return digit * 2;
+    }
 }
 
 long get_number(void) {
@@ -31,24 +41,20 @@ int check_luhn(long card_number) {
     int count_digits = 0;
 
     // Sum of multiplied and not multiplied digits
-    int sum_multiplied_digits = 0;
-    int sum_non_multiplied_digits = 0;
+    int sum_multiply = 0;
+    int sum_not_multiply = 0;
 
+    // Shrink card number
     while (card_number > 1000) {
         int last_digit = card_number % 10;
-        sum_non_multiplied_digits += last_digit;
+        sum_not_multiply += last_digit;
         card_number /= 10;
         count_digits++;
 
-        int multiplied_digit = card_number % 10;
-        // Check if product of the multiplied digit is more than 9. If so, sum
-        // its digits.
-        if (multiplied_digit * 2 > 9) {
-            sum_multiplied_digits += (multiplied_digit * 2) % 10;
-            sum_multiplied_digits += (multiplied_digit * 2) / 10;
-        } else {
-            sum_multiplied_digits += multiplied_digit * 2;
-        }
+        int second_to_last = card_number % 10;
+        // Check if product of the multiplied digit is more than 9. If so,
+        // sum its digits.
+        sum_multiply += is_double_digit(second_to_last);
 
         card_number /= 10;
         count_digits++;
@@ -56,16 +62,11 @@ int check_luhn(long card_number) {
 
     // Process the remainder
     if (card_number < 100) {
-        sum_non_multiplied_digits += card_number % 10;
+        sum_not_multiply += card_number % 10;
 
-        // Check if product of the multiplied digit is more than 9. If so, sum
-        // its digits.
-        if ((card_number / 10) * 2 > 9) {
-            sum_multiplied_digits += (((card_number / 10) * 2) % 10);
-            sum_multiplied_digits += (((card_number / 10) * 2) / 10);
-        } else {
-            sum_multiplied_digits += (card_number / 10) * 2;
-        }
+        // Check if product of the multiplied digit is more than 9. If so,
+        // sum its digits.
+        sum_multiply += is_double_digit(card_number / 10);
         // Add 2 to count_digits
         count_digits += 2;
 
@@ -73,19 +74,13 @@ int check_luhn(long card_number) {
         first_two_digits = card_number;
 
     } else {
-        sum_non_multiplied_digits += card_number % 10;
+        sum_not_multiply += card_number % 10;
         card_number /= 10;
 
-        // Check if product of the multiplied digit is more than 9. If so, sum
-        // its digits.
-        if ((card_number % 10) * 2 > 9) {
-            sum_multiplied_digits += (((card_number % 10) * 2) % 10);
-            sum_multiplied_digits += (((card_number % 10) * 2) / 10);
-        } else {
-            sum_multiplied_digits += (card_number % 10) * 2;
-        }
-
-        sum_non_multiplied_digits += card_number / 10;
+        // Check if product of the multiplied digit is more than 9. If so,
+        // sum its digits.
+        sum_multiply += is_double_digit(card_number % 10);
+        sum_not_multiply += card_number / 10;
         // Add 3 to count_digits
         count_digits += 3;
 
@@ -94,7 +89,7 @@ int check_luhn(long card_number) {
     }
 
     // Initialize total variable to store sum of digits
-    int total = sum_non_multiplied_digits + sum_multiplied_digits;
+    int total = sum_not_multiply + sum_multiply;
     // Check conditions for checksum and for first digits
     if (total % 10 != 0) {
         return 0;
