@@ -5,25 +5,31 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug with Clang",
+      "name": "C Debug",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/a.out",
+      "program": "${workspaceFolder}/${input:programName}",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
-      "MIMode": "lldb",
+      "MIMode": "gdb",
       "setupCommands": [
         {
-          "description": "Enable pretty-printing for lldb",
+          "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
       ],
-      "preLaunchTask": "clang++",
-      "miDebuggerPath": "/usr/bin/lldb"
+      "preLaunchTask": "gcc build"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "programName",
+      "type": "promptString",
+      "description": "Enter the program name"
     }
   ]
 }
