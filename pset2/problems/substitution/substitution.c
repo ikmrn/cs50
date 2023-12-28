@@ -4,29 +4,25 @@
 #include <string.h>
 
 bool check_key(string key);
-string substitute(string key, string text);
-
+void substitute(string key, string text);
 
 int main(int argc, string argv[]) {
-
-  // Check if there is an argument and 
+    // Check if there is an argument and ensure they are all letters.
     if (argc != 2 || check_key(argv[1])) {
         printf("Usage: ./substitution key\n");
         return 1;
     }
     string key = argv[1];
 
+    // Check the length of the key (26 characters required).
     int key_length = strlen(key);
-    if (key_length != 26){
-      printf("Key must contain 26 characters.\n");
-      return 1;
+    if (key_length != 26) {
+        printf("Key must contain 26 characters.\n");
+        return 1;
     }
 
     string text = get_string("plaintext:  ");
-    string cipher_text = substitute(key, text);
-    printf("ciphertext: %s", cipher_text);
-
-
+    substitute(key, text);
 }
 
 bool check_key(string key) {
@@ -39,6 +35,20 @@ bool check_key(string key) {
     return true;
 }
 
-string substitute(string key, string text) {
-  return 0;
+void substitute(string key, string text) {
+    int text_len = strlen(text);
+    printf("ciphertext: ");
+
+    // Loop through the string and substitute letters according to the key.
+    for (int i = 0; i < text_len; i++) {
+        if (islower(text[i])) {
+            printf("%c", tolower(key[text[i] - 'a']));
+        } else if (isupper(text[i])) {
+            printf("%c", toupper(key[text[i] - 'A']));
+        } else {
+            printf("%c", text[i]);
+            ;  // Preserve non-alphabetic characters
+        }
+    }
+    printf("\n");
 }
