@@ -15,7 +15,6 @@ int main(void) {
     int letters = count_result[0];
     int words = count_result[1];
     int sentences = count_result[2];
-    int len = count_result[3];
     printf("Letters %i\n", letters);
     printf("Words %i\n", words);
     printf("Sentences %i\n", sentences);
