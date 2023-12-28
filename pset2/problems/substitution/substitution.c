@@ -8,7 +8,7 @@ void substitute(string key, string text);
 
 int main(int argc, string argv[]) {
     // Check if there is an argument and ensure they are all letters.
-    if (argc != 2 || check_key(argv[1])) {
+    if (argc != 2 || !check_key(argv[1])) {
         printf("Usage: ./substitution key\n");
         return 1;
     }
@@ -27,11 +27,22 @@ int main(int argc, string argv[]) {
 
 bool check_key(string key) {
     int length = strlen(key);
+    bool seen[26];
+
+    // Check for non-alphabetic characters
     for (int i = 0; i < length; i++) {
-        if (isalpha(key[i])) {
-            return false;
+        if (!isalpha(key[i])) {
+            return false;  // Key contains a non-alphabetic character
         }
+        // Use array seen to check it a character was seen
+        int index = tolower(key[i]) - 'a';
+        if (seen[index]){
+          return false;
+        }
+        seen[index] = true;
     }
+
+    // All characters in the key are alphabetic
     return true;
 }
 
