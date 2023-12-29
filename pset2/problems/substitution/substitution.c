@@ -58,7 +58,7 @@ void substitute(string key, string text) {
             printf("%c", toupper(key[text[i] - 'A']));
         } else {
             printf("%c", text[i]);
-            ;  // Preserve non-alphabetic characters
+            // Preserve non-alphabetic characters
         }
     }
     printf("\n");
