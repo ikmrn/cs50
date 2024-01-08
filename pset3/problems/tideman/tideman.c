@@ -1,6 +1,8 @@
 #include <cs50.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 // Max number of candidates
 #define MAX 9
@@ -90,7 +92,7 @@ int main(int argc, string argv[]) {
 bool vote(int rank, string name, int ranks[]) {
     // TODO
     for (int i = 0; i < candidate_count; i++) {
-        if (strcmp(candidates[i], name) == 0) {
+        if (strcasecmp(candidates[i], name) == 0) {
             ranks[rank] = i;
             return true;
         }
@@ -124,22 +126,70 @@ void add_pairs(void) {
     return;
 }
 
+void merge(int left, int mid, int right) {
+    // Calculate sizes for temporary array
+    int left_size = mid - left + 1;
+    int right_size = right - mid;
+
+    // Create temporary arrays
+    pair left_array[left_size], right_array[right_size];
+
+    // Copy to temporary arrays
+    for (int i = 0; i < left_size; i++) {
+        left_array[i] = pairs[i + left];
+    }
+    for (int i = 0; i < right_size; i++) {
+        right_array[i] = pairs[i + mid + 1];
+    }
+
+    // Merge temporary arrays into pairs array
+    int l = 0;
+    int r = 0;
+    int start_index = left;
+
+    while (l < left_size && r < right_size) {
+        int left = preferences[left_array[l].winner][left_array[l].loser];
+        int right = preferences[right_array[r].winner][right_array[r].loser];
+
+        if (left > right) {
+            pairs[start_index] = left_array[l];
+            l++;
+        } else {
+            pairs[start_index] = right_array[r];
+            r++;
+        }
+        start_index++;
+    }
+
+    // Copy the remaining elements of left array
+    while (l < left_size) {
+        pairs[start_index] = left_array[l];
+        start_index++;
+        l++;
+    }
+    // Copy the remaining elements of right array
+    while (r < right_size) {
+        pairs[start_index] = right_array[r];
+        start_index++;
+        r++;
+    }
+}
+
+// Sort pairs array in decreasing order by strength of victory
+void merge_sort(int left, int right) {
+    if (left < right) {
+        int mid = (left + right) / 2;
+
+        merge_sort(left, mid);
+        merge_sort(mid + 1, right);
+
+        merge(left, mid, right);
+    }
+}
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void) {
     // TODO
-    // Use descending bubble sort
-    for (int i = pair_count - 1; i >= 0; i--) {
-        for (int j = 0; j < i; j++) {
-            int first = preferences[pairs[j].winner][pairs[j].loser];
-            int second = preferences[pairs[j + 1].winner][pairs[j + 1].loser];
-            if (first < second) {
-                pair n = pairs[j];
-                pairs[j] = pairs[j + 1];
-                pairs[j + 1] = n;
-            }
-        }
-    }
-    return;
+    merge_sort(0, pair_count - 1);
 }
 // Helper function to check for cycles. If there is a cycle return true.
 bool check_cycle(int loser, int winner) {
