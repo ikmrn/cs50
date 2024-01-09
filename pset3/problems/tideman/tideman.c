@@ -148,10 +148,10 @@ void merge(int left, int mid, int right) {
     int start_index = left;
 
     while (l < left_size && r < right_size) {
-        int left = preferences[left_array[l].winner][left_array[l].loser];
-        int right = preferences[right_array[r].winner][right_array[r].loser];
+        int strength_l = preferences[left_array[l].winner][left_array[l].loser];
+        int strength_r = preferences[right_array[r].winner][right_array[r].loser];
 
-        if (left > right) {
+        if (strength_l > strength_r) {
             pairs[start_index] = left_array[l];
             l++;
         } else {
