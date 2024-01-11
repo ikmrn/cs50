@@ -86,5 +86,54 @@ void blur(int height, int width, RGBTRIPLE image[height][width]) {
 
 // Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width]) {
+    RGBTRIPLE copy_img[height + 2][width + 2];
+    RGBTRIPLE black = {0, 0, 0};
 
+    // Copy the image with 1px black edges
+    for (int i = 0, n = height + 2; i < n; i++) {
+        for (int j = 0, m = width + 2; j < m; j++) {
+            if (j == 0 || j == m - 1 || i == 0 || i == n - 1) {
+                copy_img[i][j] = black;
+            } else {
+                copy_img[i][j] = image[i - 1][j - 1];
+            }
+        }
+    }
+
+    // Gx matrix
+    int Gx[3][3] = {{-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1}};
+    // Gy matrix
+    int Gy[3][3] = {{-1, -2, -1}, {0, 0, 0}, {1, 2, 1}};
+
+    // Traverse through every pixel of the image grid
+    for (int i = 1, n = height + 1; i < n; i++) {
+        for (int j = 1, m = width + 1; j < m; j++) {
+            int gx_red = 0, gx_green = 0, gx_blue = 0;
+            int gy_red = 0, gy_green = 0, gy_blue = 0;
+
+            // Loop through adjacent pixels
+            for (int x = -1; x < 2; x++) {
+                for (int y = -1; y < 2; y++) {
+                    int row = i + x;
+                    int col = j + y;
+
+                    gx_red += copy_img[row][col].rgbtRed * Gx[x + 1][y + 1];
+                    gx_green += copy_img[row][col].rgbtGreen * Gx[x + 1][y + 1];
+                    gx_blue += copy_img[row][col].rgbtBlue * Gx[x + 1][y + 1];
+
+                    gy_red += copy_img[row][col].rgbtRed * Gy[x + 1][y + 1];
+                    gy_green += copy_img[row][col].rgbtGreen * Gy[x + 1][y + 1];
+                    gy_blue += copy_img[row][col].rgbtBlue * Gy[x + 1][y + 1];
+                }
+            }
+            image[i - 1][j - 1].rgbtRed =
+                fmin(255, round(sqrt(pow(gx_red, 2) + pow(gy_red, 2))));
+            image[i - 1][j - 1].rgbtGreen =
+                fmin(255, round(sqrt(pow(gx_green, 2) + pow(gy_green, 2))));
+            image[i - 1][j - 1].rgbtBlue =
+                fmin(255, round(sqrt(pow(gx_blue, 2) + pow(gy_blue, 2))));
+        }
+    }
+
+    return;
 }
