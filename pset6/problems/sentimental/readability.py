@@ -13,10 +13,6 @@ def main():
     text = input("Text: ")
     letters, words, sentences = count_text(text)
     index = calculate_index(letters, words, sentences)
-    print(
-        f"letters: {letters}, words: {words}, sentences: {sentences}, index: {index}"
-    )
-
     print_grade(index)
 
 
