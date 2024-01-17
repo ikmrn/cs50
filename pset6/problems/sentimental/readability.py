@@ -63,7 +63,48 @@ def count_text(text: str) -> tuple[int, int, int]:
     return (letters, words, sentences)
 
 
+def calculate_index(letters: int, words: int, sentences: int) -> int:
+    """Calculate Coleman-Liau index based on the number of letters,
+    words, sentences.
 
+    Parameters
+    ----------
+    letters : int
+        Number of letters in the text
+    words : int
+        Number of words in the text
+    sentences : int
+        Number of sentences in the text
+
+    Returns
+    -------
+    int
+        Coleman-Liau index
+    """
+    coleman_l = letters / words * 100
+    coleman_s = sentences / words * 100
+    index = 0.0588 * coleman_l - 0.296 * coleman_s - 15.8
+    return round(index)
+
+
+def print_grade(index: int):
+    """Print readability grade based on the Coleman-Liau index.
+
+    If the index is less than 1, print "Below Grade 1".
+    If the index is greater than 16, print "Grade 16+".
+    Otherwise, print the corresponding grade.
+
+        Parameters
+        ----------
+        index : int
+            Coleman-Liau index
+    """
+    if index >= 16:
+        print("Grade 16+")
+    elif index < 1:
+        print("Before Grade 1")
+    else:
+        print(f"Grade {index}")
 
 
 if __name__ == "__main__":
