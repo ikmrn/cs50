@@ -5,7 +5,7 @@ import random
 import sys
 
 # Number of simulations to run
-N = 1000
+N = 10
 
 
 def main():
