@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
         printf("Could not load %s.\n", dictionary);
         return 1;
     }
-    unload_hash();
     // Calculate time to load dictionary
     time_load = calculate(&before, &after);
 
