@@ -33,6 +33,12 @@ int main(int argc, char *argv[]) {
     }
     int len = populate_array(arr, capacity, file);
 
+    // Sort the array
+    merge_sort(arr, 0, len - 1);
+
+    for (int i = 0; i < len; i++) {
+        printf("%i\n", arr[i]);
+    }
 }
 
 int populate_array(int arr[], int capacity, FILE *file) {
@@ -49,4 +55,17 @@ int populate_array(int arr[], int capacity, FILE *file) {
     fclose(file);
 
     return count;
+}
+
+void merge_sort(int arr[], int left, int right) {
+    // Base case
+    if (left < right) {
+        int mid = left + ((right - left) / 2);
+        // Recursive call
+        merge_sort(arr, left, mid);
+        merge_sort(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    }
+    return;
 }
