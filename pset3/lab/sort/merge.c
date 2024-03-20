@@ -57,6 +57,49 @@ int populate_array(int arr[], int capacity, FILE *file) {
     return count;
 }
 
+void merge(int arr[], int left, int mid, int right) {
+    // Initialize left and right arrays, sizes and pointers
+    int pointer = left, left_p = 0, right_p = 0;
+    int left_size = mid - left + 1;
+    int right_size = right - mid;
+    int left_array[left_size];
+    int right_array[right_size];
+
+    // Copy data to temporary arrays
+    for (int i = 0; i < left_size; i++) {
+        left_array[i] = arr[left + i];
+    }
+    for (int i = 0; i < right_size; i++) {
+        right_array[i] = arr[mid + i + 1];
+    }
+
+    // Compare
+    while (left_p < left_size && right_p < right_size) {
+        if (left_array[left_p] < right_array[right_p]) {
+            arr[pointer] = left_array[left_p];
+            left_p++;
+        } else {
+            arr[pointer] = right_array[right_p];
+            right_p++;
+        }
+        pointer++;
+    }
+
+    // Copy rest of left array
+    while (left_p < left_size) {
+        arr[pointer] = left_array[left_p];
+        left_p++;
+        pointer++;
+    }
+
+    // Copy rest of right array
+    while (right_p < right_size) {
+        arr[pointer] = right_array[right_p];
+        right_p++;
+        pointer++;
+    }
+}
+
 void merge_sort(int arr[], int left, int right) {
     // Base case
     if (left < right) {
