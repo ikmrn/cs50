@@ -29,6 +29,25 @@ int main(int argc, char *argv[]) {
         printf("Error: Unable to open file %s\n", filename);
         return 1;
     }
-    
+    int len = populate_array(arr, capacity, file);
+
+    for (int i = 0; i < len; i++) {
+        printf("%i\n", arr[i]);
+    }
 }
 
+int populate_array(int arr[], int capacity, FILE *file) {
+    int count = 0;
+    while (count < capacity && fscanf(file, "%i", &arr[count]) == 1) {
+        count++;
+    }
+    // Check for errors or premature EOF
+    if (!feof(file) || ferror(file)) {
+        fclose(file);
+        printf("Error reading the file. Check capacity.\n");
+        exit(2);
+    }
+    fclose(file);
+
+    return count;
+}
