@@ -55,5 +55,17 @@ int populate_array(int arr[], int capacity, FILE *file) {
 }
 
 void insertion_sort(int arr[], int len) {
-   
+    for (int i = 1; i < len; i++) {
+        int j = i - 1;
+        int current = arr[i];
+
+        // Shift elements greater than current to the right
+        while (arr[j] > current && j >= 0) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        // Insert current element into the correct position
+        arr[j + 1] = current;
+    }
 }
