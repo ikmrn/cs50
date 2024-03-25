@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     int len = populate_array(arr, capacity, file);
-    selection_sort(arr, len - 1);
+    selection_sort(arr, len);
 
     for (int i = 0; i < len; i++) {
         printf("%i\n", arr[i]);
