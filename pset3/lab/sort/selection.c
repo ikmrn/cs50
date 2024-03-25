@@ -3,6 +3,8 @@
 
 // Prototypes
 int populate_array(int arr[], int capacity, FILE *file);
+void selection_sort(int arr[], int hi);
+void swap(int *a, int *b);
 
 int main(int argc, char *argv[]) {
     // Check the number of arguments
@@ -30,6 +32,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     int len = populate_array(arr, capacity, file);
+    selection_sort(arr, len - 1);
 
     for (int i = 0; i < len; i++) {
         printf("%i\n", arr[i]);
@@ -50,4 +53,24 @@ int populate_array(int arr[], int capacity, FILE *file) {
     fclose(file);
 
     return count;
+}
+
+// Utility functions
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void selection_sort(int arr[], int hi) {
+    for (int i = 0; i < hi; i++) {
+        int smallest_idx = i;
+
+        for (int j = i; j < hi; j++) {
+            if (arr[j] < arr[smallest_idx]) {
+                smallest_idx = j;
+            }
+        }
+        swap(&arr[i], &arr[smallest_idx]);
+    }
 }
