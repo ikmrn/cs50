@@ -3,7 +3,7 @@
 
 // Prototypes
 int populate_array(int arr[], int capacity, FILE *file);
-void selection_sort(int arr[], int len);
+void insertion_sort(int arr[], int len);
 
 int main(int argc, char *argv[]) {
     // Check the number of arguments
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
     }
     int len = populate_array(arr, capacity, file);
 
-    selection_sort(arr, len);
+    insertion_sort(arr, len);
     for (int i = 0; i < len; i++) {
         printf("%i\n", arr[i]);
     }
@@ -54,7 +54,7 @@ int populate_array(int arr[], int capacity, FILE *file) {
     return count;
 }
 
-void selection_sort(int arr[], int len) {
+void insertion_sort(int arr[], int len) {
     for (int i = 1; i < len; i++) {
         int j = i - 1;
         int current = arr[i];
@@ -69,4 +69,3 @@ void selection_sort(int arr[], int len) {
         arr[j + 1] = current;
     }
 }
-
