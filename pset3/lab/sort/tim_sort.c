@@ -78,15 +78,15 @@ void tim_sort(int arr[], int len) {
 }
 
 void insertion_sort(int arr[], int lo, int hi) {
-    for (int i = lo; i < hi; i++) {
+    for (int i = lo + 1; i < hi; i++) {
         int current = arr[i];
-        int j = i;
+        int j = i - 1;
 
-        while (arr[j - 1] > current && j > lo) {
-            arr[j] = arr[j - 1];
+        while (arr[j] > current && j >= lo) {
+            arr[j + 1] = arr[j];
             j--;
         }
-        arr[j] = current;
+        arr[j + 1] = current;
     }
 }
 
